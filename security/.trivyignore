@@ -1,0 +1,13 @@
+# Accepted/triaged vulnerabilities. Trivy skips these in the gate.
+# RULES:
+#   - One CVE/advisory ID per line.
+#   - ALWAYS add an expiry so acceptances get revisited: `CVE-XXXX-NNNN exp:YYYY-MM-DD`
+#   - ALWAYS add a comment with the justification.
+#   - Prefer fixing (upgrade the image tag) over accepting.
+#
+# The ERPNext image's fixable CRITICAL/HIGH are mostly upstream-controlled (Go stdlib in
+# vendored binaries, bundled npm packages). They are best cleared by upgrading to a newer
+# frappe/erpnext patch tag (which rebuilds with patched components), NOT by accepting here.
+# Accept below ONLY after triage, with an expiry, e.g.:
+#
+# CVE-2025-68121 exp:2026-09-01   # Go stdlib in vendored bench binary; no exploit path; await upstream rebuild

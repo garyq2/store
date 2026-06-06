@@ -1,0 +1,65 @@
+name: security-scan
+
+# Supply-chain gate. Two postures:
+#   1) storefront (code we control)   -> HARD gate on fixable CRITICAL/HIGH + secrets
+#   2) ERPNext vendor images          -> SBOM + SARIF for visibility; HARD gate on
+#                                        SECRETS only (we can't patch upstream CVEs, so
+#                                        they're tracked in the Security tab, not blocking).
+# Weekly schedule re-scans the pinned images as new CVEs are disclosed.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * 1" # Mondays 06:00 UTC
+
+permissions:
+  contents: read
+  security-events: write # upload SARIF to the Security tab
+
+jobs:
+  storefront:
+    name: storefront deps (hard gate)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trivy filesystem scan (our code + npm deps)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+          trivyignores: security/.trivyignore
+
+  erpnext-images:
+    name: ERPNext images (SBOM + SARIF; secrets hard-gate)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install trivy + syft
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sudo sh -s -- -b /usr/local/bin
+      - name: Scan image set (secrets gate; CVEs report-only)
+        run: GATE=secrets ./security/scan-images.sh
+      - name: Upload SBOMs + reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: supply-chain-artifacts
+          path: |
+            security/sbom/
+            security/reports/
+      - name: Upload SARIF to Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: security/reports
+
+  # To HARD-gate the vendor images too (once you've triaged + accepted upstream CVEs in
+  # security/.trivyignore, or upgraded to a patched ERPNext tag), change the
+  # "Scan image set" step above to:  run: GATE=full ./security/scan-images.sh

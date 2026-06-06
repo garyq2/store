@@ -1,0 +1,186 @@
+/* =========================================================================
+   Store — Design Tokens
+   Direction: Emerald & Clay · Soft & friendly · Inter · lifestyle/apparel/home
+   Two layers: PRIMITIVES (raw) -> SEMANTIC (role-based, themeable).
+   Use ONLY semantic tokens in components. Light is default; .dark or
+   [data-theme="dark"] flips the theme. Contrast targets WCAG AA.
+   ========================================================================= */
+
+:root {
+  /* ---- PRIMITIVES: brand emerald ---- */
+  --emerald-50:  #ECFDF5;
+  --emerald-100: #D1FAE5;
+  --emerald-200: #A7F3D0;
+  --emerald-300: #6EE7B7;
+  --emerald-400: #34D399;
+  --emerald-500: #10B981;
+  --emerald-600: #059669;  /* brand accent the user chose */
+  --emerald-700: #047857;  /* high-contrast fill for AA white text */
+  --emerald-800: #065F46;
+  --emerald-900: #064E3B;
+  --emerald-950: #022C22;
+
+  /* ---- PRIMITIVES: clay / warm secondary ---- */
+  --clay-50:  #FFFBEB;
+  --clay-100: #FEF3C7;
+  --clay-200: #FDE68A;
+  --clay-300: #FCD34D;
+  --clay-400: #FBBF24;
+  --clay-500: #F59E0B;
+  --clay-600: #D97706;  /* secondary accent */
+  --clay-700: #B45309;
+  --clay-800: #92400E;
+  --clay-900: #78350F;
+
+  /* ---- PRIMITIVES: neutrals (slate, slightly cool to sit under mint bg) ---- */
+  --neutral-0:   #FFFFFF;
+  --neutral-50:  #F8FAF9;  /* mint-white page bg */
+  --neutral-100: #F1F5F4;
+  --neutral-200: #E2E8F0;
+  --neutral-300: #CBD5E1;
+  --neutral-400: #94A3B8;
+  --neutral-500: #64748B;
+  --neutral-600: #475569;
+  --neutral-700: #334155;
+  --neutral-800: #1E293B;
+  --neutral-900: #0F172A;  /* ink text */
+  --neutral-950: #0B1220;  /* dark-mode bg */
+
+  /* ---- PRIMITIVES: status hues ---- */
+  --green-600:  #16A34A;  --green-50:  #DCFCE7;
+  --amber-600:  #D97706;  --amber-50:  #FEF3C7;
+  --red-600:    #DC2626;  --red-50:    #FEE2E2;
+  --cyan-600:   #0891B2;  --cyan-50:   #CFFAFE;
+
+  /* ---- TYPOGRAPHY ---- */
+  --font-display: var(--font-inter), "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-body:    var(--font-inter), "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono:    ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+
+  --text-xs:   0.75rem;   --lh-xs:   1rem;
+  --text-sm:   0.875rem;  --lh-sm:   1.25rem;
+  --text-base: 1rem;      --lh-base: 1.5rem;
+  --text-lg:   1.125rem;  --lh-lg:   1.6rem;
+  --text-xl:   1.25rem;   --lh-xl:   1.6rem;
+  --text-2xl:  1.5rem;    --lh-2xl:  1.95rem;
+  --text-3xl:  1.875rem;  --lh-3xl:  2.25rem;
+  --text-4xl:  2.25rem;   --lh-4xl:  2.55rem;
+  --text-5xl:  3rem;      --lh-5xl:  3.25rem;
+
+  --fw-regular: 400;  --fw-medium: 500;  --fw-semibold: 600;  --fw-bold: 700;
+  --tracking-tight: -0.01em;  --tracking-normal: 0;  --tracking-wide: 0.02em;
+
+  /* ---- SPACING (4px base) ---- */
+  --space-1: 0.25rem; --space-2: 0.5rem;  --space-3: 0.75rem; --space-4: 1rem;
+  --space-5: 1.25rem; --space-6: 1.5rem;  --space-8: 2rem;    --space-10: 2.5rem;
+  --space-12: 3rem;   --space-16: 4rem;   --space-20: 5rem;   --space-24: 6rem;
+
+  /* ---- RADIUS (soft & friendly = generous rounding) ---- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --radius-full: 9999px;   /* pill buttons */
+
+  /* ---- ELEVATION (soft, low-opacity, ink-tinted) ---- */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.10);
+  --shadow-focus: 0 0 0 3px rgba(5, 150, 105, 0.35);  /* emerald focus ring */
+
+  /* ---- MOTION ---- */
+  --dur-fast: 120ms;  --dur-base: 200ms;  --dur-slow: 320ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.3, 0, 0, 1.2);
+
+  /* ---- Z-INDEX ---- */
+  --z-header: 100;  --z-drawer: 200;  --z-modal: 300;  --z-toast: 400;
+}
+
+/* ============================ SEMANTIC: LIGHT ============================ */
+:root,
+[data-theme="light"] {
+  --color-bg:            var(--neutral-50);
+  --color-surface:       var(--neutral-0);
+  --color-surface-2:     var(--neutral-100);
+  --color-border:        var(--neutral-200);
+  --color-border-strong: var(--neutral-300);
+
+  --color-text:          var(--neutral-900);
+  --color-text-muted:    var(--neutral-500);
+  --color-text-subtle:   var(--neutral-400);
+
+  --color-primary:        var(--emerald-600);  /* brand reference */
+  --color-primary-fill:   var(--emerald-700);  /* solid CTA bg (AA w/ white) */
+  --color-primary-hover:  var(--emerald-800);
+  --color-primary-subtle: var(--emerald-50);   /* tinted backgrounds */
+  --color-on-primary:     #FFFFFF;
+
+  --color-secondary:        var(--clay-600);
+  --color-secondary-hover:  var(--clay-700);
+  --color-secondary-subtle: var(--clay-50);
+  --color-on-secondary:     #FFFFFF;
+
+  --color-success: var(--green-600); --color-success-bg: var(--green-50);
+  --color-warning: var(--amber-600); --color-warning-bg: var(--amber-50);
+  --color-error:   var(--red-600);   --color-error-bg:   var(--red-50);
+  --color-info:    var(--cyan-600);  --color-info-bg:    var(--cyan-50);
+
+  --color-focus-ring: var(--emerald-600);
+  --color-overlay: rgba(15, 23, 42, 0.45);  /* drawer/modal scrim */
+}
+
+/* ============================ SEMANTIC: DARK ============================= */
+[data-theme="dark"],
+.dark {
+  --color-bg:            var(--neutral-950);
+  --color-surface:       #111A2B;
+  --color-surface-2:     #18233A;
+  --color-border:        #233047;
+  --color-border-strong: #2E3E59;
+
+  --color-text:          #E6EDF3;
+  --color-text-muted:    var(--neutral-400);
+  --color-text-subtle:   var(--neutral-500);
+
+  --color-primary:        var(--emerald-500);
+  --color-primary-fill:   var(--emerald-500);  /* lighter fill on dark */
+  --color-primary-hover:  var(--emerald-400);
+  --color-primary-subtle: rgba(16, 185, 129, 0.14);
+  --color-on-primary:     var(--emerald-950);  /* dark text on bright fill = AA */
+
+  --color-secondary:        var(--clay-500);
+  --color-secondary-hover:  var(--clay-400);
+  --color-secondary-subtle: rgba(217, 119, 6, 0.16);
+  --color-on-secondary:     #1A1206;
+
+  --color-success: #4ADE80; --color-success-bg: rgba(34,197,94,0.15);
+  --color-warning: #FBBF24; --color-warning-bg: rgba(217,119,6,0.18);
+  --color-error:   #F87171; --color-error-bg:   rgba(220,38,38,0.18);
+  --color-info:    #22D3EE; --color-info-bg:    rgba(8,145,178,0.18);
+
+  --color-focus-ring: var(--emerald-400);
+  --color-overlay: rgba(2, 6, 12, 0.6);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 14px rgba(0,0,0,0.45);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.5);
+}
+
+/* Auto dark when user prefers it and no explicit light override is set. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+    --color-bg: var(--neutral-950);
+    --color-surface: #111A2B;
+    --color-surface-2: #18233A;
+    --color-border: #233047;
+    --color-text: #E6EDF3;
+    --color-text-muted: var(--neutral-400);
+    --color-primary: var(--emerald-500);
+    --color-primary-fill: var(--emerald-500);
+    --color-primary-hover: var(--emerald-400);
+    --color-on-primary: var(--emerald-950);
+    --color-focus-ring: var(--emerald-400);
+    --color-overlay: rgba(2, 6, 12, 0.6);
+  }
+}

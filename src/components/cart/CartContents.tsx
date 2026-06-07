@@ -86,12 +86,12 @@ export default function CartContents() {
           <span className="font-semibold">{cart.subtotal.formatted}</span>
         </div>
         <p className="mt-1 text-xs text-text-subtle">Shipping &amp; tax calculated at checkout.</p>
-        <button
-          className="mt-5 w-full cursor-not-allowed rounded-full bg-primary-fill px-5 py-3 font-semibold text-on-primary opacity-90"
-          title="Checkout is built in the next phase"
+        <Link
+          href="/checkout"
+          className="mt-5 block w-full rounded-full bg-primary-fill px-5 py-3 text-center font-semibold text-on-primary hover:bg-primary-hover"
         >
           Checkout →
-        </button>
+        </Link>
         <Link
           href="/shop"
           className="mt-2 block text-center text-sm text-text-muted hover:text-text"

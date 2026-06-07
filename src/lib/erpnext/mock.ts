@@ -1,5 +1,5 @@
 import "server-only";
-import type { CatalogDataSource } from "./source";
+import type { CatalogDataSource, CustomerInput, SalesOrderInput } from "./source";
 import type { RawItem, RawItemPrice, RawBin } from "./types";
 
 /**
@@ -71,5 +71,14 @@ export class MockDataSource implements CatalogDataSource {
   async getStockLevels(itemCodes: string[]): Promise<RawBin[]> {
     const set = new Set(itemCodes);
     return BINS.filter((b) => set.has(b.item_code));
+  }
+
+  async findOrCreateCustomer(input: CustomerInput): Promise<string> {
+    return `MOCK-CUST/${input.email}`;
+  }
+
+  async createSalesOrder(input: SalesOrderInput): Promise<string> {
+    const units = input.items.reduce((s, i) => s + i.qty, 0);
+    return `MOCK-SO-${input.items.length}x${units}`;
   }
 }

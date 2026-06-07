@@ -125,7 +125,7 @@ export default function MiniCart() {
                 <span className="font-semibold">{cart.subtotal.formatted}</span>
               </div>
               <Link
-                href="/cart"
+                href="/checkout"
                 onClick={closeCart}
                 className="block rounded-full bg-primary-fill px-5 py-3 text-center font-semibold text-on-primary hover:bg-primary-hover"
               >

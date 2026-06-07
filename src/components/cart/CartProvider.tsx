@@ -19,6 +19,7 @@ interface CartContextValue {
   add: (productId: string, qty?: number) => Promise<void>;
   setQty: (productId: string, qty: number) => Promise<void>;
   remove: (productId: string) => Promise<void>;
+  refresh: () => Promise<void>;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -74,6 +75,14 @@ export default function CartProvider({ children }: { children: React.ReactNode }
     },
     [post],
   );
+  const refresh = useCallback(async () => {
+    try {
+      const res = await fetch("/api/cart");
+      if (res.ok) setCart((await res.json()) as Cart);
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   return (
     <CartContext.Provider
@@ -86,6 +95,7 @@ export default function CartProvider({ children }: { children: React.ReactNode }
         add,
         setQty,
         remove,
+        refresh,
       }}
     >
       {children}

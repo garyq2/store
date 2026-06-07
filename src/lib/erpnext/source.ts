@@ -1,25 +1,52 @@
 import "server-only";
 import type { RawItem, RawItemPrice, RawBin } from "./types";
 
+/** Shipping address captured at checkout. */
+export interface ShippingAddress {
+  name: string;
+  line1: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
+  country?: string;
+}
+
+export interface CustomerInput {
+  email: string;
+  name: string;
+}
+
+export interface SalesOrderItemInput {
+  itemCode: string;
+  qty: number;
+  rate: number;
+}
+
+export interface SalesOrderInput {
+  customer: string;
+  currency: string;
+  priceList: string;
+  items: SalesOrderItemInput[];
+  shipping?: ShippingAddress;
+}
+
 /**
- * The catalog data source: the seam between our storefront and ERPNext.
- * A mock implementation (in-memory) and a live REST implementation both satisfy this
- * interface, so the rest of the app never changes when we flip from mock to a real
- * ERPNext instance.
- *
- * This module is `server-only`: it (and its implementations) hold ERPNext API
- * credentials and must never be bundled into client code.
+ * The data source: the seam between our storefront and ERPNext. Mock and live both
+ * satisfy this interface, so the rest of the app never changes when flipping mock⇄live.
+ * `server-only`: holds ERPNext API credentials; never bundled into client code.
  */
 export interface CatalogDataSource {
-  /** All storefront-eligible items (sales items, not disabled). */
+  // --- reads ---
   listItems(): Promise<RawItem[]>;
   getItemByCode(itemCode: string): Promise<RawItem | null>;
   getItemPrices(itemCodes: string[], priceList: string): Promise<RawItemPrice[]>;
   getStockLevels(itemCodes: string[]): Promise<RawBin[]>;
+  // --- writes (checkout) ---
+  findOrCreateCustomer(input: CustomerInput): Promise<string>; // returns Customer name
+  createSalesOrder(input: SalesOrderInput): Promise<string>; // returns Sales Order name
 }
 
 export const config = {
-  /** Default to mock; set STOREFRONT_USE_MOCK=false once ERPNext is reachable. */
   useMock: process.env.STOREFRONT_USE_MOCK !== "false",
   erpnextUrl: process.env.ERPNEXT_URL ?? "",
   apiKey: process.env.ERPNEXT_API_KEY ?? "",
